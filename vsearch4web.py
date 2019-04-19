@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, escape
+from flask import Flask, render_template, request, escape, session
 from vsearch import search4letters
-
+from checker import check_logged_in as cli
 from DBcm import UseDatabase
 
 app = Flask(__name__)
+
+def search4letters(phrase, letters='aeiou'):
+    """Return a set of 'letters' found in phrase"""
+    return ser(letters).intersection(set(phrase))
 
 app.config['dbconfig'] = { 'host': '127.0.0.1',
                             'user': 'vsearch',
@@ -52,7 +56,18 @@ def do_search():
                             the_results=results,
                             the_request=request,)
 
+@app.route('/login')
+def do_login() -> str:
+    session['logged_in'] = True
+    return 'You are now logged in.'
+
+@app.route('/logout')
+def do_logout() -> str:
+    session.pop('logged_in')
+    return 'You are now logged out.'
+
 @app.route('/viewlog')
+@cli
 def view_log() ->'html':
     #contents = []
     #with open('vsearch.log') as log:
