@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def search4letters(phrase, letters='aeiou'):
     """Return a set of 'letters' found in phrase"""
-    return ser(letters).intersection(set(phrase))
+    return set(letters).intersection(set(phrase))
 
 app.config['dbconfig'] = { 'host': '127.0.0.1',
                             'user': 'vsearch',
@@ -65,6 +65,8 @@ def do_login() -> str:
 def do_logout() -> str:
     session.pop('logged_in')
     return 'You are now logged out.'
+
+app.secret_key = 'YouWillNeverGuessMySecretKey'
 
 @app.route('/viewlog')
 @cli
