@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, escape, session
 from vsearch import search4letters
 from checker import check_logged_in as cli
-from DBcm import UseDatabase
+from DBcm import UseDatabase, ConnectionError, CredentialsError
 
 app = Flask(__name__)
 
@@ -48,7 +48,10 @@ def do_search():
     letters = request.form['letters']
     title = 'Here are your results:'
     results = str(search4letters(phrase, letters))
-    log_request(request, results)
+    try:
+        log_request(request, results)
+    except Exception as err:
+        print('*****Error in logging: ', str(err))
     return render_template('results.html',
                             the_phrase=phrase,
                             the_letters=letters,
@@ -77,17 +80,25 @@ def view_log() ->'html':
     #        contents.append([])
     #        for item in line.split('|'):
     #           contents[-1].append(escape(item))
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """select phrase, letters, ip, browser_string, results from log"""
+    try:
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """select phrase, letters, ip, browser_string, results from log"""
 
-        cursor.execute(_SQL)
-        contents = cursor.fetchall()
+            cursor.execute(_SQL)
+            contents = cursor.fetchall()
 
-    titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results')
-    return render_template('viewlog.html',
+        titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results')
+        return render_template('viewlog.html',
                             the_title='View Log',
                             the_row_titles=titles,
                             the_data=contents,)
+    except ConnectionError as err:
+        print ('Is your database switched on? Error: ', str(err))
+    except CredentialsError as err:
+        print ('User-id/Password issues. Error: ', str(err))
+    except Exception as err:
+        print('Something went wrong: ', str(err))
+    return 'Error'
 
 @app.route('/')
 @app.route('/entry')
