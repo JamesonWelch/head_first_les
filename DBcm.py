@@ -29,3 +29,7 @@ class UseDatabase:
         self.conn.commit()
         self.cursor.close()
         self.conn.close()
+        if exc_type is mysql.connector.error.ProgrammingError:
+            raise SQLError(exc_value)
+        elif exc_type:
+            raise exc_type(exc_value)
