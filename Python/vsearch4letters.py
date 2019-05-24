@@ -48,7 +48,8 @@ def do_search():
     title = 'Here are your results:'
     results = str(search4letters(phrase, letters))
     try:
-        log_request(request, results)
+        t = Thread(target=log_request, args=(request, results))
+        t.start()
     except Exception as err:
         print('*****Error in logging: ', str(err))
     return render_template('results.html',
