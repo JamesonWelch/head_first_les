@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Planets</title>
+	<link href="css/custom.css" rel="stylesheet">
+	<style>
+		.redtext {
+			color: red;
+		}
+	</style>
+	<script>
+		function init() {
+			var planet = document.getElementById("greenplanet");
+		}
+		window.onload = init;
+	</script>
+</head>
+
+<body>
+	<div>
+		<p>Character Set
+			<button onclick="console.log(document.characterSet);">
+				Log Character Encoding
+			</button>
+	</div>
+	<div>
+		<p>Purpose for DOCTYPE to load in full standard mode and not outdated versions.<button
+				onclick="console.log(document.compatMode);">
+				Log Compat Mode
+			</button>
+			<div>
+				<p>Header element of content type
+					<button onclick="console.log(document.contentType);">
+						Log Content Type
+					</button>
+			</div>
+			<div>
+				<p>URI or URL - location of this file
+					<button onclick="console.log(document.documentURI);">
+						Log Document Uri
+					</button>
+			</div>
+			<div>
+				<p>DOM implementation
+					<button onclick="console.log(document.implementation);">
+						Log Document Implementation
+					</button>
+			</div>
+			<div>
+				<p>State of visibility. Can add an event listener to perform actions when user clicks away:
+					<br>
+					document.addEventListener("visibilitychange", function() {<br>
+					console.log( document.visibilityState );<br>
+					// Modify behavior...<br>
+					});
+					<button onclick="console.log(document.visibilityState);">
+						Log Document Visibility State
+					</button>
+			</div>
+			<div>
+				<p>Chech to see if document is hidden (see Doc Visibility State)
+					<button onclick="console.log(document.hidden);">
+						Log Document Hidden Boolean
+					</button>
+			</div>
+			<div>
+				<p>Returns list of cookies
+					<button onclick="console.log(document.cookie);">
+						Log Document Cookies
+					</button>
+			</div>
+			<div>
+				<p>Returns a reference to the window object URL or URI
+					<button onclick="console.log(document.defaultView);">
+						Log Document Default View
+					</button>
+			</div>
+</body>
+
+</html>
